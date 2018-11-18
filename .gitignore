@@ -2,8 +2,6 @@
 .gradle
 /build/
 /out/
-/gradle/wrapper/
-gradlew*
 # Ignore Gradle GUI config
 gradle-app.setting
 
