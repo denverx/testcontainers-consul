@@ -6,8 +6,9 @@ official hashicorp image from dockerhub.
 
 ##### Features
 
-- support for token
+- support for ACLs
 - consul configuration as an object
+- support for both new (>= 1.4.0) and legacy (< 1.4.0) ACL config
 
 
 ##### Examples

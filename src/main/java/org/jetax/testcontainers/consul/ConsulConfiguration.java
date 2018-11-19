@@ -37,6 +37,40 @@ public class ConsulConfiguration {
     @SerializedName("dns")
     private DNS dns;
 
+    // region deprecated
+    /** Below field are deprecated since 1.4.0
+     * {@link ACL} should be used since 1.4.0
+     */
+    @Deprecated
+    @SerializedName("acl_agent_master_token")
+    private String aclAgenMasterToken;
+
+    @Deprecated
+    @SerializedName("acl_agent_token")
+    private String aclAgenToken;
+
+    @Deprecated
+    @SerializedName("acl_datacenter")
+    private String aclDatacenter;
+
+    @Deprecated
+    @SerializedName("acl_default_policy")
+    private String aclDefaultPolicy;
+
+    @Deprecated
+    @SerializedName("acl_down_policy")
+    private String aclDownPolicy;
+
+    @Deprecated
+    @SerializedName("acl_master_token")
+    private String aclMasterToken;
+
+    @Deprecated
+    @SerializedName("acl_replication_token")
+    private String aclReplicationToken;
+
+    // endregion
+
     @Data
     @NoArgsConstructor
     public static class Ports {

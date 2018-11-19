@@ -1,9 +1,12 @@
 package org.jetax.testcontainers.consul;
 
 import com.google.gson.Gson;
-import org.jetax.testcontainers.consul.ConsulContainerOptions.ConsulContrainerOption;
+import org.jetax.testcontainers.consul.ConsulContainerOptions.ConsulContainerOption;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.containers.wait.strategy.WaitStrategy;
+
+import java.time.Duration;
 
 import static org.jetax.testcontainers.consul.ConsulContainerOptions.LOCAL_CONFIG_PARAM_NAME;
 
@@ -20,6 +23,7 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
 
     private ConsulConfiguration consulConfiguration;
     private ConsulContainerOptions consulContainerOptions;
+    private Integer waitTimeout;
 
     public ConsulContainer() {
         super(CONSUL_IMAGE + ":" + CONSUL_VERSION);
@@ -36,13 +40,28 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
         this.consulContainerOptions = options;
     }
 
+    public ConsulContainer(ConsulConfiguration consulConfiguration, ConsulContainerOptions consulContainerOptions,
+                           String containerVersion, Integer waitTimeout) {
+        super(String.format("%s:%s", CONSUL_IMAGE, containerVersion != null ? containerVersion : CONSUL_VERSION));
+        this.consulConfiguration = consulConfiguration;
+        this.consulContainerOptions = consulContainerOptions;
+        this.waitTimeout = waitTimeout;
+    }
+
     @Override
     protected void configure() {
         bindPorts();
         setEnv();
-        waitingFor(Wait.forHttp(HEALTH_CHECK_PATH)
+
+        WaitStrategy wait = Wait.forHttp(HEALTH_CHECK_PATH)
                 .forStatusCode(200)
-                .forPort(getHttpPort()));
+                .forPort(getHttpPort());
+
+        if (this.waitTimeout != null) {
+            wait = wait.withStartupTimeout(Duration.ofSeconds(waitTimeout));
+        }
+
+        waitingFor(wait);
     }
 
 
@@ -56,7 +75,7 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
     }
 
     private void setEnv() {
-        for (ConsulContrainerOption opt : ConsulContrainerOption.values()) {
+        for (ConsulContainerOption opt : ConsulContainerOption.values()) {
             withEnv(opt.getOptionName(),
                     this.consulContainerOptions.getOrDefault(opt.getOptionName(), opt.getDefaultValue()));
         }
