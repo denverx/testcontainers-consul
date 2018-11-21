@@ -1,8 +1,11 @@
 package org.jetax.testcontainers.consul;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.testcontainers.shaded.org.apache.commons.lang.StringUtils;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -15,11 +18,11 @@ public class ConsulConfiguration {
     private String nodeName;
     @SerializedName("server")
     private Boolean isServer;
-    @SerializedName("key_file")
+    @Setter(AccessLevel.PROTECTED) @SerializedName("key_file")
     private String keyFile;
-    @SerializedName("cert_file")
+    @Setter(AccessLevel.PROTECTED) @SerializedName("cert_file")
     private String certFile;
-    @SerializedName("ca_file")
+    @Setter(AccessLevel.PROTECTED) @SerializedName("ca_file")
     private String caFile;
     @SerializedName("log_level")
     private String logLevel;
@@ -29,6 +32,10 @@ public class ConsulConfiguration {
     private Boolean rejoinAfterLeave;
     @SerializedName("primary_datacenter")
     private String primaryDatacenter;
+    @SerializedName("verify_incoming")
+    private Boolean verifyIncoming;
+    @SerializedName("verify_outgoing")
+    private Boolean verifyOutgoing;
 
     @SerializedName("ports")
     private Ports ports;
@@ -36,6 +43,8 @@ public class ConsulConfiguration {
     private ACL acl;
     @SerializedName("dns")
     private DNS dns;
+
+    private transient TLSConfig tlsConfig;
 
     // region deprecated
     /** Below field are deprecated since 1.4.0
@@ -134,5 +143,24 @@ public class ConsulConfiguration {
         private String nodeTTL;
         @SerializedName("only_passing")
         private String onlyPassing;
+    }
+
+    /**
+     * We can't use {@link ConsulConfiguration#caFile}, {@link ConsulConfiguration#certFile} and
+     * {@link ConsulConfiguration#keyFile} as it is serialized to consul config, but we have to preserve
+     * mapping from classpath resource to file in container.
+     * Filenames from {@link TLSConfig} are copied to container and then automatically set up in
+     * {@link ConsulConfiguration}.
+     */
+    @Data
+    @NoArgsConstructor
+    public static class TLSConfig {
+        private String caFile;
+        private String certFile;
+        private String keyFile;
+
+        public boolean tlsEnabled() {
+            return StringUtils.isNotEmpty(keyFile) && StringUtils.isNotEmpty(certFile) && StringUtils.isNotEmpty(caFile);
+        }
     }
 }

@@ -5,6 +5,7 @@ import org.jetax.testcontainers.consul.ConsulContainerOptions.ConsulContainerOpt
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.containers.wait.strategy.WaitStrategy;
+import org.testcontainers.utility.MountableFile;
 
 import java.time.Duration;
 
@@ -20,6 +21,10 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
     private static final Integer DEFAULT_DNS_PORT = 8600;
 
     private static final String HEALTH_CHECK_PATH = "/v1/status/leader";
+
+    private static final String CA_FILE_NAME = "/consul/config/ca";
+    private static final String CERT_FILE_NAME = "/consul/config/cert";
+    private static final String KEY_FILE_NAME = "/consul/config/key";
 
     private ConsulConfiguration consulConfiguration;
     private ConsulContainerOptions consulContainerOptions;
@@ -50,6 +55,7 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
 
     @Override
     protected void configure() {
+        copyFiles();
         bindPorts();
         setEnv();
 
@@ -81,6 +87,21 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
         }
         if (this.consulConfiguration != null) {
             withEnv(LOCAL_CONFIG_PARAM_NAME, new Gson().toJson(this.consulConfiguration));
+        }
+    }
+
+    private void copyFiles() {
+        if (this.consulConfiguration.getTlsConfig() != null && this.consulConfiguration.getTlsConfig().tlsEnabled()) {
+            withCopyFileToContainer(MountableFile.forClasspathResource(this.consulConfiguration.getTlsConfig().getCaFile()),
+                    CA_FILE_NAME);
+            withCopyFileToContainer(MountableFile.forClasspathResource(this.consulConfiguration.getTlsConfig().getCertFile()),
+                    CERT_FILE_NAME);
+            withCopyFileToContainer(MountableFile.forClasspathResource(this.consulConfiguration.getTlsConfig().getKeyFile()),
+                    KEY_FILE_NAME);
+
+            this.consulConfiguration.setCaFile(CA_FILE_NAME);
+            this.consulConfiguration.setCertFile(CERT_FILE_NAME);
+            this.consulConfiguration.setKeyFile(KEY_FILE_NAME);
         }
     }
 
