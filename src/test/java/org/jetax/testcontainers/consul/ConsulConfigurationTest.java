@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -43,6 +44,36 @@ public class ConsulConfigurationTest {
                             "\"acl_master_token\":\"token\"" +
                             "}",
                 json);
+    }
+
+    @Test
+    public void testConfigurationShortcuts() {
+        // given
+        String masterToken = UUID.randomUUID().toString();
+        String agentToken = UUID.randomUUID().toString();
+        String replicationToken = UUID.randomUUID().toString();
+        String aclDefaultPolicy = "deny";
+
+        ConsulContainerBuilder containerBuilder = new ConsulContainerBuilder();
+        containerBuilder
+                .withACLEnabled()
+                .withMasterToken(masterToken)
+                .withAgentToken(agentToken)
+                .withReplicationToken(replicationToken)
+                .withACLDefaultPolicy(aclDefaultPolicy);
+
+
+        // when
+        ConsulConfiguration config = containerBuilder.buildConfig();
+
+        // then
+        assertNotNull(config.getAcl());
+        assertTrue(config.getAcl().getEnabled());
+        assertEquals(aclDefaultPolicy, config.getAcl().getDefaultPolicy());
+        assertNotNull(config.getAcl().getTokens());
+        assertEquals(masterToken, config.getAcl().getTokens().getMaster());
+        assertEquals(agentToken, config.getAcl().getTokens().getAgent());
+        assertEquals(replicationToken, config.getAcl().getTokens().getReplication());
     }
 
 }

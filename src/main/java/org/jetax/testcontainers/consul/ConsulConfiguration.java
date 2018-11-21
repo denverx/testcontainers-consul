@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 @Data
-@NoArgsConstructor
 public class ConsulConfiguration {
     private String datacenter;
     @SerializedName("node_name")
@@ -80,6 +79,14 @@ public class ConsulConfiguration {
 
     // endregion
 
+
+    public ConsulConfiguration() {
+        this.ports = new Ports();
+        this.acl = new ACL();
+        this.dns = new DNS();
+        this.tlsConfig = new TLSConfig();
+    }
+
     @Data
     @NoArgsConstructor
     public static class Ports {
@@ -99,7 +106,6 @@ public class ConsulConfiguration {
     }
 
     @Data
-    @NoArgsConstructor
     public static class ACL {
         private Boolean enabled;
         @SerializedName("enable_token_replication")
@@ -114,6 +120,10 @@ public class ConsulConfiguration {
         private String downPolicy;
         @SerializedName("tokens")
         private Tokens tokens;
+
+        public ACL() {
+            this.tokens = new Tokens();
+        }
     }
 
     @Data
