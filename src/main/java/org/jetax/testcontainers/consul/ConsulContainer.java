@@ -91,7 +91,9 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
     }
 
     private void copyFiles() {
-        if (this.consulConfiguration.getTlsConfig() != null && this.consulConfiguration.getTlsConfig().tlsEnabled()) {
+        if (this.consulConfiguration != null &&
+                this.consulConfiguration.getTlsConfig() != null &&
+                this.consulConfiguration.getTlsConfig().tlsEnabled()) {
             withCopyFileToContainer(MountableFile.forClasspathResource(this.consulConfiguration.getTlsConfig().getCaFile()),
                     CA_FILE_NAME);
             withCopyFileToContainer(MountableFile.forClasspathResource(this.consulConfiguration.getTlsConfig().getCertFile()),
