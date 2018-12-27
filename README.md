@@ -10,6 +10,7 @@ official hashicorp image from dockerhub.
 - consul configuration as an object
 - support for both new (>= 1.4.0) and legacy (< 1.4.0) ACL config
 - TLS support
+- cluster support
 
 
 ##### Examples
@@ -61,4 +62,33 @@ config.setPorts(ports);
 
 ConsulContainer cc = new ConsulContainer(ccf);
 cc.start();
+```
+
+To avoid boilerplate one can use `ConsulContainerBuilder`:
+```java
+ConsulContainer container = new ConsulContainerBuilder()
+                .withDatacenter("default")
+                .withACLEnabled(true)
+                .withACLDefaultPolicy("deny")
+                .withMasterToken(UUID.randomUUID().toString())
+                .withContainerVersion("1.3.0")
+//              one can also specify ConsulConfiguration object, 
+//              which is a composite of all above
+//              .withConfig(config)
+                .build();
+```
+
+To run consul cluster one can reuse `ConsulContainerBuilder`:
+```java
+ConsulCluster cluster = new ConsulContainerBuilder()
+                .withDatacenter("default")
+                .withACLEnabled()
+                .withACLDefaultPolicy("deny")
+                .withMasterToken(UUID.randomUUID().toString())
+                .withContainerVersion("1.4.0")
+                .cluster(3); // cluster of 3 nodes
+
+cluster.start();
+// do smth
+cluster.stop();
 ```
