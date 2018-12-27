@@ -28,6 +28,7 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
 
     private ConsulConfiguration consulConfiguration;
     private ConsulContainerOptions consulContainerOptions;
+    private ConsulCommand consulCommand;
     private Integer waitTimeout;
 
     public ConsulContainer() {
@@ -40,16 +41,13 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
         this.consulConfiguration = consulConfiguration;
     }
 
-    public ConsulContainer(ConsulContainerOptions options) {
-        this();
-        this.consulContainerOptions = options;
-    }
-
     public ConsulContainer(ConsulConfiguration consulConfiguration, ConsulContainerOptions consulContainerOptions,
+                           ConsulCommand consulCommand,
                            String containerVersion, Integer waitTimeout) {
         super(String.format("%s:%s", CONSUL_IMAGE, containerVersion != null ? containerVersion : CONSUL_VERSION));
         this.consulConfiguration = consulConfiguration;
         this.consulContainerOptions = consulContainerOptions;
+        this.consulCommand = consulCommand;
         this.waitTimeout = waitTimeout;
     }
 
@@ -65,6 +63,10 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
 
         if (this.waitTimeout != null) {
             wait = wait.withStartupTimeout(Duration.ofSeconds(waitTimeout));
+        }
+
+        if (consulCommand != null) {
+            withCommand(consulCommand.toCommand());
         }
 
         waitingFor(wait);
@@ -129,5 +131,13 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
                 this.consulConfiguration.getPorts().getDnsPort() != null ?
                 this.consulConfiguration.getPorts().getDnsPort() :
                 DEFAULT_DNS_PORT;
+    }
+
+    protected void setConsulCommand(ConsulCommand consulCommand) {
+        this.consulCommand = consulCommand;
+    }
+
+    protected ConsulCommand getConsulCommand() {
+        return consulCommand;
     }
 }

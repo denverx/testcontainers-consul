@@ -3,8 +3,6 @@ package org.jetax.testcontainers.consul;
 import com.google.gson.Gson;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.*;

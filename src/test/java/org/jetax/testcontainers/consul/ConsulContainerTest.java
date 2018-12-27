@@ -50,7 +50,7 @@ public class ConsulContainerTest {
     public void testContainerWithLegacyACLIsRunAndWaitSucceeds() {
         ConsulConfiguration config = new ConsulConfiguration();
         config.setDatacenter(DEFAULT_DC);
-        config.setAclAgenMasterToken(UUID.randomUUID().toString());
+        config.setAclAgentMasterToken(UUID.randomUUID().toString());
         config.setAclDatacenter(DEFAULT_DC);
         config.setAclDefaultPolicy("deny");
 

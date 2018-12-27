@@ -51,11 +51,11 @@ public class ConsulConfiguration {
      */
     @Deprecated
     @SerializedName("acl_agent_master_token")
-    private String aclAgenMasterToken;
+    private String aclAgentMasterToken;
 
     @Deprecated
     @SerializedName("acl_agent_token")
-    private String aclAgenToken;
+    private String aclAgentToken;
 
     @Deprecated
     @SerializedName("acl_datacenter")
@@ -79,12 +79,7 @@ public class ConsulConfiguration {
 
     // endregion
 
-
     public ConsulConfiguration() {
-        this.ports = new Ports();
-        this.acl = new ACL();
-        this.dns = new DNS();
-        this.tlsConfig = new TLSConfig();
     }
 
     @Data
@@ -102,7 +97,6 @@ public class ConsulConfiguration {
                     .filter(Objects::nonNull)
                     .toArray(Integer[]::new);
         }
-
     }
 
     @Data
