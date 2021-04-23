@@ -6,9 +6,9 @@
 	<version>0.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<scm>
-          <developerConnection>scm:git:git@github.com:krisiye/testcontainers-consul.git</developerConnection>
+          <developerConnection>scm:git:git@github.com:hmhco/testcontainers-consul.git</developerConnection>
           <tag>HEAD</tag>
-  </scm>
+  	</scm>
 	<properties>
 		<java.version>15</java.version>
 		<maven.compiler.source>15</maven.compiler.source>
