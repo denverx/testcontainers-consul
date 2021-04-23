@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jetax</groupId>
 	<artifactId>testcontainers-consul</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<scm>
           <developerConnection>scm:git:git@github.com:hmhco/testcontainers-consul.git</developerConnection>
-          <tag>testcontainers-consul-0.1.1</tag>
+          <tag>HEAD</tag>
   	</scm>
 	<properties>
 		<java.version>15</java.version>
