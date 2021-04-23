@@ -6,7 +6,7 @@
 	<version>0.1.0</version>
 	<packaging>jar</packaging>
 	<scm>
-		<developerConnection>scm:git:git@github.com:hmhco/testcontainers-consul.git</developerConnection>
+          <developerConnection>scm:git:git@github.com:krisiye/testcontainers-consul.git</developerConnection>
 	  <tag>testcontainers-consul-0.1.0</tag>
   </scm>
 	<properties>
