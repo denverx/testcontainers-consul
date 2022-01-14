@@ -5,15 +5,51 @@
 	<artifactId>testcontainers-consul</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+    <developers>
+        <developer>
+            <id>hmhco</id>
+            <name>Kris Iyer</name>
+            <email>krishnakumar.iyer@hmhco.com</email>
+            <url>https://www.hmhco.com</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    
 	<scm>
 	    <developerConnection>scm:git:git@github.com:hmhco/testcontainers-consul.git</developerConnection>
 	    <tag>HEAD</tag>
   	</scm>
+  	
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/hmhco/testcontainers-consul/issues</url>
+    </issueManagement>
+      	
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+          	
 	<properties>
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
+		<testcontainers.version>1.16.2</testcontainers.version>
+		<consul.api.version>1.4.5</consul.api.version>
 	</properties>
+	
 	<dependencies>
         <dependency>
         	<groupId>com.google.code.gson</groupId>
@@ -28,17 +64,17 @@
         <dependency>
         	<groupId>com.ecwid.consul</groupId>
         	<artifactId>consul-api</artifactId>
-        	<version>1.4.5</version>
-        </dependency>  
+        	<version>${consul.api.version}</version>
+        </dependency>
 		<dependency>
 		    <groupId>org.testcontainers</groupId>
 		    <artifactId>testcontainers</artifactId>
-		    <version>1.16.2</version>
+		    <version>${testcontainers.version}</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.testcontainers</groupId>
 		    <artifactId>junit-jupiter</artifactId>
-		    <version>1.16.2</version>
+		    <version>${testcontainers.version}</version>
 		    <scope>test</scope>
 		</dependency>
 		<dependency>
@@ -49,51 +85,5 @@
 		</dependency>		
 		<!-- end::tests[] -->
 	</dependencies>
-	<distributionManagement>
-		<repository>
-			<id>hmheng-io-libs-release-local</id>
-			<name>repo.hmheng.io-release</name>
-			<url>https://repo.br.hmheng.io/artifactory/libs-release-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>hmheng-io-snapshots-local</id>
-			<name>repo.hmheng.io-snapshots</name>
-			<url>https://repo.br.hmheng.io/artifactory/libs-snapshot-local</url>
-		</snapshotRepository>
-	</distributionManagement>
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>maven-repo</id>
-			<name>maven-repo</name>
-			<url>https://repo.maven.apache.org</url>
-		</repository>
-		<repository>
-			<id>hmheng-io-snapshots-local</id>
-			<name>repo.hmheng.io-snapshots</name>
-			<url>https://repo.br.hmheng.io/artifactory/libs-snapshot-local</url>
-		</repository>
-		<repository>
-			<id>hmheng-io-libs-release-local</id>
-			<name>repo.hmheng.io-release</name>
-			<url>https://repo.br.hmheng.io/artifactory/libs-release-local/</url>
-		</repository>
-		<repository>
-			<id>hmheng-io-remotes</id>
-			<name>remote-repos</name>
-			<url>https://repo.br.hmheng.io/artifactory/remote-repos/</url>
-		</repository>
-		<repository>
-			<id>dublin-sonatype-releases</id>
-			<name>dublin-sonatype-releases</name>
-			<url>https://repo.br.hmheng.io/artifactory/list/dublin-sonatype-releases/</url>
-		</repository>
-	</repositories>
+
 </project>
