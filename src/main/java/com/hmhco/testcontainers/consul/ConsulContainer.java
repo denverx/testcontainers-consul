@@ -1,16 +1,23 @@
-package org.jetax.testcontainers.consul;
+package com.hmhco.testcontainers.consul;
 
-import com.google.gson.Gson;
-import org.jetax.testcontainers.consul.ConsulContainerOptions.ConsulContainerOption;
+import static com.hmhco.testcontainers.consul.ConsulContainerOptions.LOCAL_CONFIG_PARAM_NAME;
+
+import java.time.Duration;
+
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.containers.wait.strategy.WaitStrategy;
 import org.testcontainers.utility.MountableFile;
 
-import java.time.Duration;
+import com.google.gson.Gson;
+import com.hmhco.testcontainers.consul.ConsulContainerOptions.ConsulContainerOption;
 
-import static org.jetax.testcontainers.consul.ConsulContainerOptions.LOCAL_CONFIG_PARAM_NAME;
-
+/**
+ * A testcontainer for Hashicorp Consul.
+ * 
+ * @author iyerk
+ *
+ */
 public class ConsulContainer extends GenericContainer<ConsulContainer> {
 
     private static final String CONSUL_IMAGE = "consul";
@@ -31,16 +38,33 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
     private ConsulCommand consulCommand;
     private Integer waitTimeout;
 
+    /**
+     * Default constructor
+     */
     public ConsulContainer() {
         super(CONSUL_IMAGE + ":" + CONSUL_VERSION);
         this.consulContainerOptions = new ConsulContainerOptions();
     }
 
+    /**
+     * Build Container with configuration
+     * 
+     * @param consulConfiguration - the consul configuration
+     */
     public ConsulContainer(ConsulConfiguration consulConfiguration) {
         this();
         this.consulConfiguration = consulConfiguration;
     }
 
+    /**
+     * Build container
+     * 
+     * @param consulConfiguration - the consul configuration
+     * @param consulContainerOptions - teh consul container options
+     * @param consulCommand - the comsul command
+     * @param containerVersion - the container version
+     * @param waitTimeout - the container wait timeout
+     */
     public ConsulContainer(ConsulConfiguration consulConfiguration, ConsulContainerOptions consulContainerOptions,
                            ConsulCommand consulCommand,
                            String containerVersion, Integer waitTimeout) {
@@ -92,6 +116,9 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
         }
     }
 
+    /**
+     * copy tls config to the container
+     */
     private void copyFiles() {
         if (this.consulConfiguration != null &&
                 this.consulConfiguration.getTlsConfig() != null &&
@@ -109,6 +136,10 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
         }
     }
 
+    /**
+     * get the http port
+     * @return Integer - the http port
+     */    
     public Integer getHttpPort() {
         return this.consulConfiguration != null &&
                     this.consulConfiguration.getPorts() != null &&
@@ -117,6 +148,11 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
                 DEFAULT_HTTP_PORT;
     }
 
+
+    /**
+     * get the https port
+     * @return Integer - the https port
+     */
     public Integer getHttpsPort() {
         return this.consulConfiguration != null &&
                 this.consulConfiguration.getPorts() != null &&
@@ -125,6 +161,10 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
                 DEFAULT_HTTPS_PORT;
     }
 
+    /**
+     * get the DnsPort
+     * @return Integer - the DnsPort
+     */
     public Integer getDnsPort() {
         return this.consulConfiguration != null &&
                 this.consulConfiguration.getPorts() != null &&
@@ -133,11 +173,20 @@ public class ConsulContainer extends GenericContainer<ConsulContainer> {
                 DEFAULT_DNS_PORT;
     }
 
+    /**
+     * sets the consul command for this container
+     * @param consulCommand - the consul command
+     */
     protected void setConsulCommand(ConsulCommand consulCommand) {
         this.consulCommand = consulCommand;
     }
 
+    /**
+     * get consul command for this container
+     * @return ConsulCommand
+     */
     protected ConsulCommand getConsulCommand() {
         return consulCommand;
     }
 }
+

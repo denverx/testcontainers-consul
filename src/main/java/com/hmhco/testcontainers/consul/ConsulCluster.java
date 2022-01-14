@@ -1,14 +1,20 @@
-package org.jetax.testcontainers.consul;
-
-import com.github.dockerjava.api.model.ContainerNetwork;
-import org.testcontainers.containers.Network;
-import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
+package com.hmhco.testcontainers.consul;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.testcontainers.containers.Network;
+
+import com.github.dockerjava.api.model.ContainerNetwork;
+
+/**
+ * A consul cluster representation
+ * 
+ * @author iyerk
+ *
+ */
 public class ConsulCluster {
 
     private int size;
@@ -16,6 +22,12 @@ public class ConsulCluster {
     private ConsulContainer[] containers;
     private Network network;
 
+    /**
+     * construct consul cluster for the given size, container and network.
+     * @param size - cluster size
+     * @param containerCreator - container creator
+     * @param network - network for the container
+     */
     public ConsulCluster(int size, Supplier<ConsulContainer> containerCreator, Network network) {
         this.size = size;
         this.containers = new ConsulContainer[size];
@@ -23,6 +35,9 @@ public class ConsulCluster {
         this.network = network;
     }
 
+    /**
+     * start cluster
+     */
     public void start() {
         String firstAddr = bootstrapFirst();
 
@@ -31,6 +46,9 @@ public class ConsulCluster {
         }
     }
 
+    /**
+     * stop cluster
+     */
     public void stop() {
         for (ConsulContainer consulContainer : containers) {
             if (consulContainer != null) {
@@ -40,10 +58,18 @@ public class ConsulCluster {
     }
 
 
+    /**
+     * get containers in the cluster
+     * @return - containers in the cluster
+     */
     public List<ConsulContainer> getContainers() {
         return Arrays.asList(containers);
     }
 
+    /**
+     * bootstrap initial container
+     * @return container address
+     */
     private String bootstrapFirst() {
         ConsulContainer first = containerCreator.get();
         if (this.network != null) first.withNetwork(network);
@@ -59,6 +85,11 @@ public class ConsulCluster {
         return nets.values().stream().findFirst().get().getIpAddress();
     }
 
+    /**
+     * bootstrap cluster members
+     * @param address - container address
+     * @return container - cluster member
+     */
     private ConsulContainer bootstrapNext(String address) {
         ConsulContainer container = containerCreator.get();
         if (this.network != null) container.withNetwork(network);
@@ -71,3 +102,4 @@ public class ConsulCluster {
 
 
 }
+

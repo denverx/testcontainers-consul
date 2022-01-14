@@ -1,23 +1,21 @@
-package org.jetax.testcontainers.consul;
+package com.hmhco.testcontainers.consul;
 
-import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.OperationException;
-import com.ecwid.consul.v1.QueryParams;
-import com.ecwid.consul.v1.catalog.CatalogNodesRequest;
-import com.ecwid.consul.v1.catalog.CatalogServiceRequest;
-import com.ecwid.consul.v1.catalog.model.CatalogService;
-import com.ecwid.consul.v1.catalog.model.Node;
-import org.junit.Test;
-import org.testcontainers.containers.ContainerState;
-import org.testcontainers.containers.Network;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.testcontainers.containers.ContainerState;
+import org.testcontainers.containers.Network;
+
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.OperationException;
+import com.ecwid.consul.v1.catalog.CatalogServiceRequest;
+import com.ecwid.consul.v1.catalog.model.CatalogService;
 
 public class ConsulClusterTest {
 

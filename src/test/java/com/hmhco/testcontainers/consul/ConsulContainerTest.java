@@ -1,15 +1,18 @@
-package org.jetax.testcontainers.consul;
+package com.hmhco.testcontainers.consul;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.UUID;
+
+import org.junit.Test;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.OperationException;
 import com.ecwid.consul.v1.kv.model.PutParams;
-import org.junit.Test;
-
-import java.util.UUID;
-
-import static org.jetax.testcontainers.consul.ConsulConfiguration.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.hmhco.testcontainers.consul.ConsulConfiguration.ACL;
+import com.hmhco.testcontainers.consul.ConsulConfiguration.Ports;
+import com.hmhco.testcontainers.consul.ConsulConfiguration.Tokens;
 
 public class ConsulContainerTest {
 

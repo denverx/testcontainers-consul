@@ -1,11 +1,14 @@
-package org.jetax.testcontainers.consul;
+package com.hmhco.testcontainers.consul;
 
-import com.google.gson.Gson;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import com.google.gson.Gson;
 
 public class ConsulConfigurationTest {
 
